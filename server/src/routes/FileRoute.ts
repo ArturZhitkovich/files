@@ -51,7 +51,7 @@ class FileRouter {
 
   async uploadFile(req: Request, res: Response, next: express.NextFunction) {
     try {
-      // Проверяем, загружен ли файл
+      // Проверяем, загружен ли ф айл
       if (!req.file) {
         return res.status(400).send("Файл не был загружен.");
       }
