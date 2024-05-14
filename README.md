@@ -11,13 +11,34 @@
 
 ## Требования
 
-- Node.js (рекомендуемая версия 14.x)
+- Node.js (рекомендуемая версия 18.x)
 - Docker (опционально, для удобства развертывания)
 
 ## Установка
 
 1. Склонируйте репозиторий:
+2. Установите зависимости для сервера и клиента:
 
    ```bash
-   git clone <URL репозитория>
-   cd файловый-обменник
+   cd server
+   npm install
+   cd ../client
+   npm install
+
+   ```
+
+3. Запуск Docker
+
+   ```bash
+   cd server
+   npm run docker-start
+
+   ```
+
+4. Запустите сервер и клиент:
+
+   cd server
+   npm run start
+
+   cd ../client
+   npm run dev
