@@ -24,6 +24,8 @@
    },
    "scripts": {
       "start": "ts-node src/index.ts",
+      "docker-start": "docker-compose up -d",
+      "docker-stop": "docker-compose down",
       "typeorm": "typeorm-ts-node-commonjs",
       "nodemon": "nodemon"
    }

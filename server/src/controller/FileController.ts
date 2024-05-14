@@ -36,9 +36,8 @@ export class FileController extends BaseController<File> {
     }
   }
 
-  async removeFile(filename: string): Promise<void> {
+  async removeFile(filePath: string): Promise<void> {
     try {
-      const filePath = path.join(this.extractFolder, filename);
       await unlink(filePath);
     } catch (error) {
       console.error("Error while removing file:", error);
@@ -98,15 +97,16 @@ export class FileController extends BaseController<File> {
           const isExists = await this.checkIsExistsInFS(entryName);
 
           if (isExists) {
-            await this.removeFile(entryName);
+            const filePath = path.join(this.extractFolder, entryName);
+            await this.removeFile(filePath);
           }
 
           await zip.extractEntryTo(zipEntry, destinationFolder, false, true);
-
           console.log("Extracted:", entryName);
+
           const metadata = await this.readMetadata(entryName);
           const newFile = await this.saveFileInDb(metadata);
-          console.log("Save id DB:", newFile);
+          console.log("Save in DB:", newFile);
         }
       }
 
@@ -120,6 +120,8 @@ export class FileController extends BaseController<File> {
   async upload(file: Express.Multer.File) {
     try {
       await this.extractFiles(file.path);
+      await this.removeFile(file.path);
+
       return "Files saved";
     } catch (error) {
       console.error("Error while uploading files:", error);
