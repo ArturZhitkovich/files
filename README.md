@@ -37,8 +37,10 @@
 
 4. Запустите сервер и клиент:
 
+   ```bash
    cd server
    npm run start
 
    cd ../client
    npm run dev
+   ```
