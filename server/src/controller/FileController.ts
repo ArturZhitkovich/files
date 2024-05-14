@@ -4,6 +4,7 @@ import { BaseController } from "./BaseController";
 import { DeepPartial } from "typeorm";
 import path = require("path");
 import AdmZip = require("adm-zip");
+import { NextFunction } from "express";
 const util = require("util");
 
 const unlink = util.promisify(fs.unlink);
@@ -106,7 +107,7 @@ export class FileController extends BaseController<File> {
 
           const metadata = await this.readMetadata(entryName);
           const newFile = await this.saveFileInDb(metadata);
-          console.log("Save in DB:", newFile);
+          console.log("Saved in DB:", newFile);
         }
       }
 
@@ -117,7 +118,7 @@ export class FileController extends BaseController<File> {
     }
   }
 
-  async upload(file: Express.Multer.File) {
+  async upload(file: Express.Multer.File, next: NextFunction) {
     try {
       await this.extractFiles(file.path);
       await this.removeFile(file.path);

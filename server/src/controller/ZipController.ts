@@ -22,7 +22,7 @@ export class ZipController {
       const readFilePromise = new Promise<void>((resolve, reject) => {
         fs.readFile(filePath, (err, data) => {
           if (err) {
-            console.error("Ошибка чтения файла:", err);
+            console.error("Error reading file:", err);
             reject(err);
           } else {
             zip.addFile(filename, data);
@@ -38,12 +38,13 @@ export class ZipController {
 
     await zip.writeZip("./extracted/archive.zip", (err) => {
       if (err) {
-        console.error("Ошибка при создании zip-архива:", err);
+        console.error("Error creating zip archive:", err);
         return;
       }
-      console.log("Zip-архив успешно создан.");
+      console.log("Zip archive created successfully.");
     });
   }
+
   async createArchive(ids: number[]) {
     const DBFiles = await this.repository
       .createQueryBuilder("file")
