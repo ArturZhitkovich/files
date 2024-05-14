@@ -4,8 +4,9 @@ import multer = require("multer");
 import path = require("path");
 import fs = require("fs");
 import { FileController } from "../controller/FileController";
+import { fileFilter } from "../middleware/file";
 
-const upload = multer({ dest: "uploads/" }); // Папка для сохранения загруженных файлов
+const upload = multer({ dest: "uploads/" }); // Folder to save downloaded files
 
 class FileRouter {
   private router: Router;
@@ -18,6 +19,7 @@ class FileRouter {
     this.router.get("/", this.getAll.bind(this));
     this.router.post(
       "/upload",
+      fileFilter,
       upload.single("zipfile"),
       this.uploadFile.bind(this)
     );
@@ -34,18 +36,18 @@ class FileRouter {
         .then(() => true)
         .catch(() => false);
       if (!fileExists) {
-        return res.status(404).send("Файл не найден");
+        return res.status(404).send("File not found");
       }
       res.setHeader("Content-Disposition", `attachment; filename=${fileName}`);
       res.setHeader("Content-Type", "application/octet-stream");
       res.setHeader("Content-Length", fs.statSync(filePath).size);
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Pragma", "no-cache");
-      // Отправляем файл клиенту для скачивания
+      // We send the file to the client for downloading
       res.download(filePath);
     } catch (error) {
-      console.error("Ошибка при загрузке файла:", error);
-      res.status(500).send("Ошибка сервера");
+      console.error("Error while uploading file:", error);
+      res.status(500).send("Server error");
     }
   }
 
